@@ -43,4 +43,7 @@ public class QueryController {
     private static ResponseEntity<String> getStringResponseEntity(String response) {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // todo - Agrregar los endpoint con los ejercicios que se especifican en el archivo EJERCICIOS.md
+
 }

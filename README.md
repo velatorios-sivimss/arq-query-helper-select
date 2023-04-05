@@ -83,18 +83,15 @@ selectQuery.where("condicion_1",
 Si quieres hacer un join con otra tabla, utiliza los métodos `leftJoin`, `innerJoin` o `join`, seguidos de `on` para agregar
 las condiciones del join:
 ```java
-selectQuery.leftJoin("direcciones")
-        .on("direcciones.ciudad = 'Bogotá'", "usuarios.id = direcciones.id_usuario");
+selectQuery.leftJoin("direcciones", "direcciones.ciudad = 'Bogotá'", "usuarios.id = direcciones.id_usuario")
 ```
 
 La funci&oacute;n `join(tabla, on...)`, tiene una funcionalidad parecida a `where(condciones...)`, el par&aacute;metro
 `on...`, recibe una lista de condiciones y un `JOIN` puede ser representado de varias formas, a continuaci&oacute;n se
 ```java
-selectQuery.leftJoin("direcciones")
+selectQuery.join("direcciones")
         .on("direcciones.ciudad = 'Bogotá'", "usuarios.id = direcciones.id_usuario");
 ```
-muestran algunos ejemplos:
-
 
 Si quieres ordenar los resultados, utiliza el método `orderBy`:
 ```java
@@ -112,18 +109,21 @@ String query = selectQuery.build();
 ```
 
 ## M&eacute;todos
-- `public SelectQueryUtil select(String... columnas)`: agrega las columnas que quieres seleccionar.
-- `public SelectQueryUtil from(String... tabla)`: agrega las tablas de las que quieres obtener los datos.
-- `public SelectQueryUtil where(String... condiciones)`: agrega las condiciones que quieres que cumplan los registros a seleccionar.
-- `public SelectQueryUtil and(String condicion)`: agrega una condición con el operador lógico `AND`.
-- `public SelectQueryUtil or(String condicion)`: agrega una condición con el operador lógico `OR`.
-- `public SelectQueryUtil setParameter(String nombre, Object valor)`: agrega un par&aacute;metro a la consulta.
-- `public SelectQueryUtil orderBy(String columna)`: agrega una columna para ordenar los resultados.
-- `public SelectQueryUtil groupBy(String columna)`: agrega una columna para agrupar los resultados.
+- `public SelectQueryUtil select(String... columnas)`: agrega las columnas que quieres seleccionar. Si no se pasan 
+argumentos, se hace un `select * from user`.
+- `public SelectQueryUtil from(String... tabla)`: agrega la tabla o las tablas de las que quieres obtener los datos.
+- `public SelectQueryUtil where(String... condiciones)`: agrega las condiciones que quieres que cumplan los registros 
+a seleccionar. Para poder combinar `where` con un `or()` y/o un `and()`, es necesario agregar por lo menos, una 
+condici&oacute;n al `where()`.
+- `public SelectQueryUtil and(String condicion)`: agrega una condición con el operador l&oacute;gico `AND`.
+- `public SelectQueryUtil or(String condicion)`: agrega una condici&oacute;n con el operador l&oacute;gico `OR`.
 - `public SelectQueryUtil leftJoin(String tabla, String... on)`: agrega un `join` `LEFT JOIN` con otra tabla.
 - `public SelectQueryUtil innerJoin(String tabla, String on)`: agrega un `join` `INNER JOIN` con otra tabla.
 - `public SelectQueryUtil join(String tabla, String on)`: agrega un `JOIN` con otra tabla.
 - `public SelectQueryUtil on(String... condiciones)`: agrega las condiciones para el `JOIN`.
+- `public SelectQueryUtil setParameter(String nombre, Object valor)`: agrega un par&aacute;metro a la consulta.
+- `public SelectQueryUtil orderBy(String columna)`: agrega una columna para ordenar los resultados.
+- `public SelectQueryUtil groupBy(String columna)`: agrega una columna para agrupar los resultados.
 - `public String build()`: devuelve la consulta `SQL` resultante.
 
 ## Ejemplo
@@ -146,3 +146,8 @@ selectQuery.from("usuarios");
 selectQuery.leftJoin("direcciones", "usuarios.id = direcciones
 selectQuery.where("edad > 18", "ciudad = 'Bogotá'");
 ```
+
+## Ejercicios
+
+Para poder ver en acci&oacute;n la utiler&iacute;a, se han agregado varios ejercicios para poder poner 
+en pr&aacute;ctica lo que se menciona en el documento, en el siguiente [readme](EJERCICIOS.md) est&aacute; la lista de ejercicios.
