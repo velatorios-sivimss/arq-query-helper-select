@@ -125,7 +125,10 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega condiciones a la lista de condiciones agregando un and
+     * Agrega el operador <b>{@code AND}</b> a la condici&oacute;n
+     * <p>
+     * Se debe colocar despu&eacute;s de la llamada a una funci&oacute;n <b>{@code where(...)}</b> o despu&eacute;s
+     * de un <b>{@code join(...)}, {@code innerJoin(...)}, {@code leftJoin(...)}</b>
      *
      * @param condicion
      * @return
@@ -137,6 +140,9 @@ public class SelectQueryUtil {
 
     /**
      * Agrega una condicion SQL OR.
+     * <p>
+     * Se debe colocar despu&eacute;s de la llamada a una funci&oacute;n <b>{@code where(...)}</b> o despu&eacute;s
+     * de un <b>{@code join(...)}, {@code innerJoin(...)}, {@code leftJoin(...)}</b>
      *
      * @param condicion
      * @return
@@ -145,11 +151,17 @@ public class SelectQueryUtil {
         return validarCondicionesOrAnd(condicion, OR);
     }
 
+    /**
+     * Valida si la la funci&oacute;n <b>{@code or(...)}</b> o la funci&oacute;n <b>{@code and(...)}</b>
+     * @param condicion
+     * @param or
+     * @return
+     */
     private SelectQueryUtil validarCondicionesOrAnd(String condicion, String or) {
-//        if (condiciones.isEmpty()) {
-//            throw new IllegalStateException("Se tiene que agregar por lo menos una condicion en el where");
-//        }
         if (Objects.equals(lastMethodCalled, WHERE)) {
+            if (condiciones.isEmpty()) {
+                throw new IllegalStateException("Se tiene que agregar por lo menos una condicion en el where");
+            }
             this.condiciones.add(crearCondicion(condicion, or));
         }
         if (lastMethodCalled.equals(JOIN)) {
@@ -177,7 +189,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega la sentencia SQL para ordenar la consulta.
+     * Agrega la sentencia SQL <b>{@code ORDER BY}</b> para ordenar la consulta.
      *
      * @param columna
      * @return
@@ -189,7 +201,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega la sentencia SQL group by para la consulta.
+     * Agrega la sentencia SQL <b>{@code GROUP BY}</b> para la consulta.
      *
      * @param columna
      * @return
@@ -200,7 +212,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega la sentencia de LEFT JOIN para hacer consultas con otras tablas.
+     * Agrega la sentencia de <b>{@code LEFT JOIN}</b> para hacer consultas con otras tablas.
      *
      * @param tabla
      * @param on
@@ -215,7 +227,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega la sentencia JOIN para hacer consultas usando otras tablas.
+     * Agrega la sentencia <b>{@code INNER JOIN}</b> para hacer consultas usando otras tablas.
      *
      * @param tabla
      * @param on
@@ -230,7 +242,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Agrega la sentencia JOIN para hacer consultas usando otras tablas.
+     * Agrega la sentencia <b>{@code JOIN}</b> para hacer consultas usando otras tablas.
      *
      * @param tabla
      * @param on
@@ -254,7 +266,7 @@ public class SelectQueryUtil {
      * @return
      */
     public SelectQueryUtil on(String... condiciones) {
-        if (!isJoinCalled && !lastMethodCalled.equals("join")) {
+        if (!isJoinCalled && !lastMethodCalled.equals(JOIN)) {
             throw new IllegalStateException("on no puede se llamado sin antes invocar a join o joinLeft");
         }
         for (String condicion : condiciones) {
@@ -317,7 +329,8 @@ public class SelectQueryUtil {
         if (helperCondiciones.isEmpty()) {
             helperCondiciones = this.condiciones;
         }
-        final boolean contieneAndOr = condicion.contains("#" + OR) || condicion.contains("#" + AND);
+        final boolean contieneOr = condicion.contains("#" + OR);
+        final boolean contieneAndOr = contieneOr || condicion.contains("#" + AND);
         if (index != 0 &&
                 !contieneAndOr) {
             stringBuilder.append(SPACE).append(AND).append(SPACE);

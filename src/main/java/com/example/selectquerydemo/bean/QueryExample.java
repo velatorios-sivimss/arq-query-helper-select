@@ -2,23 +2,31 @@ package com.example.selectquerydemo.bean;
 
 import com.example.selectquerydemo.dto.FiltrosDto;
 import com.example.selectquerydemo.util.SelectQueryUtil;
-import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class QueryExample {
 
     public String selectNormal() {
-        Map<String, Object> parametros = new HashMap<>();
-        String query = "SELECT " +
-                "ID_CAPILLA AS idCapilla, " +
-                "NOM_CAPILLA AS nombre " +
-                "FROM SVC_CAPILLA";
+
+//        String query = "SELECT " +
+//                "ID_CAPILLA AS idCapilla, " +
+//                "NOM_CAPILLA AS nombre " +
+//                "FROM SVC_CAPILLA";
+        SelectQueryUtil queryUtil = new SelectQueryUtil();
+
+        // ejemplo sin columnas
+//        queryUtil.select()
+//                .from("SVC_CAPILLA");
+
+        queryUtil.select("ID_CAPILLA AS idCapilla",
+                "NOM_CAPILLA as nombre")
+                .from("SVC_CAPILLA");
+
+        String query = queryUtil.build();
         return query;
     }
 
@@ -201,7 +209,7 @@ public class QueryExample {
                         "velatorio.ID_VELATORIO AS idVelatorio",
                         "velatorio.NOM_VELATORIO AS nombreVelatorio ")
                 .from("SVC_CAPILLA capilla")
-                .join("SVC_VELATORIO velatorio", "capilla.ID_VELATORIO = velatorio.ID_VELATORIO and ")
+                .join("SVC_VELATORIO velatorio", "capilla.ID_VELATORIO = velatorio.ID_VELATORIO")
                 .where("ID_CAPILLA = :idCapilla")
                 .setParameter("idCapilla", idCapilla)
                 .orderBy("ID_CAPILLA asc");

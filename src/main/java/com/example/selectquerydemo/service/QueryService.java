@@ -8,4 +8,6 @@ public interface QueryService {
     String selectConJoin();
 
     String selectConParametrosOpcionales(FiltrosDto filtros) throws Exception;
+
+    String otroSelect(Long id);
 }

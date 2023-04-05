@@ -34,6 +34,12 @@ public class QueryController {
         return getStringResponseEntity(response);
     }
 
+    @GetMapping("/otro-select/{id}")
+    public ResponseEntity<String> otroSelect(@PathVariable Long id) {
+        String response = queryService.otroSelect(id);
+        return getStringResponseEntity(response);
+    }
+
     private static ResponseEntity<String> getStringResponseEntity(String response) {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
