@@ -279,6 +279,12 @@ public class SelectQueryUtil {
         return this;
     }
 
+    /**
+     * Agrega la sentencia limit al query que se est&aacute; armando.
+     *
+     * @param limit
+     * @return
+     */
     public SelectQueryUtil limit(Integer limit) {
         this.limit = limit;
         return this;
