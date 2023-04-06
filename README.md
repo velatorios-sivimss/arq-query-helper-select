@@ -1,7 +1,4 @@
-# mssivimss-cat-velatorios
-
-CU008_GestionarVelatorios
-Permitir gestionar los velatorios registrados en el sistema.
+# Utiler&iacute;a `SelectQueryUtil`
 
 ## `SelectQueryUtil` introducci&oacute;n.
 
@@ -13,6 +10,7 @@ escribir en un `String` el valor de la consulta, por ejemplo:
 Para escribir una sentencia `SELECT` lo pod&iacute;amos hacer de la siguiente forma:
 
 ```java
+// ... mas logica
 String query="select u.id, u.name from user u";
 // encriptar la cadena
 //...
@@ -22,7 +20,8 @@ Sin embargo en el ejemplo anterior, aunque todav&iacute;a es posible, la utiler&
 simplificando la forma y con un mayor control en lo que se pretende consultar, ya que, en el caso del c&oacute;digo
 anterior, es simple y no tenemos tanto problema, pero pensemos en un ejercicio m&aacute;s elaborado, podemos perder
 control de caracteres como la `,`, `''`, `"`, etc. Ya que la consulta se va generando de forma din&aacute;mica,
-permite tambi&eacute;n pasar par&aacute;metros usando `placeholders`.
+permite tambi&eacute;n pasar par&aacute;metros usando `placeholders`. A continuaci&oacute;n se describe el proceso con
+mayor detalle.
 
 ## Uso
 
@@ -133,7 +132,7 @@ A continuaci&oacute;n se muestran algunos ejemplos del uso de la utiler&iacute;a
 SelectQueryUtil selectQuery = new SelectQueryUtil();
 selectQuery.select("nombre", "apellido", "edad");
   .from("usuarios");
-  .leftJoin("direcciones", "usuarios.id = direcciones
+  .leftJoin("direcciones", "usuarios.id = direcciones")
   .where("edad > 18", "ciudad = 'Bogotá'");
 ```
 
@@ -143,7 +142,7 @@ O tambi&eacute;n se puede armar el query de la siguiente forma:
 SelectQueryUtil selectQuery = new SelectQueryUtil();
 selectQuery.select("nombre", "apellido", "edad");
 selectQuery.from("usuarios");
-selectQuery.leftJoin("direcciones", "usuarios.id = direcciones
+selectQuery.leftJoin("direcciones", "usuarios.id = direcciones")
 selectQuery.where("edad > 18", "ciudad = 'Bogotá'");
 ```
 

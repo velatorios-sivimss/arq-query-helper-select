@@ -22,10 +22,15 @@ public class QueryExample {
 //        queryUtil.select()
 //                .from("SVC_CAPILLA");
 
-        queryUtil.select("ID_CAPILLA AS idCapilla",
-                "NOM_CAPILLA as nombre")
-                .from("SVC_CAPILLA");
+//        queryUtil.select("ID_CAPILLA AS idCapilla",
+//                "NOM_CAPILLA as nombre")
+//                .from("SVC_CAPILLA");
 
+        queryUtil.select("codigoPostal", "id")
+                .from("svc_cp cp")
+                .where("cp.codigoPostal = :codigoPostal")
+                .limit(1)
+                .setParameter("codigoPostal", "123123");
         String query = queryUtil.build();
         return query;
     }
@@ -62,11 +67,14 @@ public class QueryExample {
                 .leftJoin("SVC_ROL_FUNCIONALIDAD per")
                 .on("per.ID_FUNCIONALIDAD = mem.ID_FUNCIONALIDAD",
                         "per.ID_ROL = :idRol")
-                .or("per.CVE_ESTATUS = 1")
+                .or("per.CVE_ESTATUS = :estatus")
                 .and("otra_condicion = 1")
                 .leftJoin("SVT_ROL rol", "rol.ID_ROL = per.ID_ROL")
-                .where("rol.id = :idRol")
+                .where("rol.id = :idRol",
+                        "rol.id in (1,2,3)")
                 .setParameter("idRol", 11)
+                .setParameter("estatus", 1)
+
                 .groupBy("men.ID_FUNCIONALIDAD");
         String query = selectQuery.build();
         System.out.println("************************");
@@ -184,7 +192,8 @@ public class QueryExample {
                     .setParameter("idVelatorio", request.getIdOtraTabla());
         }
 
-        selectQueryUtil.orderBy("ID_CAPILLA");
+        selectQueryUtil
+                .orderBy("ID_CAPILLA");
 
         Map<String, Object> parametros = new HashMap<>();
         // todo - agregar la funcionalidad para encriptar en el selectQueryUtil
