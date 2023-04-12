@@ -10,4 +10,6 @@ public interface QueryService {
     String selectConParametrosOpcionales(FiltrosDto filtros) throws Exception;
 
     String otroSelect(Long id);
+
+    String selectConUnion();
 }

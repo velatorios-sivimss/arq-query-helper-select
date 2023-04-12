@@ -34,5 +34,10 @@ public class QueryServiceImpl implements QueryService {
         return queryExample.selectConParametrosJoin(id);
     }
 
+    @Override
+    public String selectConUnion() {
+        return queryExample.selectConUnion();
+    }
+
 
 }

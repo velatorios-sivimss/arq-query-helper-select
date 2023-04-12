@@ -40,6 +40,12 @@ public class QueryController {
         return getStringResponseEntity(response);
     }
 
+    @GetMapping("/select-con-union")
+    public ResponseEntity<String> selectConUnion() {
+        String response = queryService.selectConUnion();
+        return getStringResponseEntity(response);
+    }
+
     private static ResponseEntity<String> getStringResponseEntity(String response) {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
