@@ -1,6 +1,7 @@
 package com.example.selectquerydemo.bean;
 
 import com.example.selectquerydemo.dto.FiltrosDto;
+import com.example.selectquerydemo.util.QueryHelper;
 import com.example.selectquerydemo.util.SelectQueryUtil;
 import org.springframework.stereotype.Component;
 
@@ -208,29 +209,61 @@ public class QueryExample {
      * @return
      */
     public String selectConParametrosJoin(Long idCapilla) {
-        SelectQueryUtil selectQueryUtil = new SelectQueryUtil();
-        selectQueryUtil.select("ID_CAPILLA AS idCapilla",
-                        "NOM_CAPILLA AS nombre",
-                        "CAN_CAPACIDAD AS capacidad",
-                        "NUM_LARGO AS largo",
-                        "NUM_ALTO AS alto",
-                        "CVE_ESTATUS AS estatus",
-                        "velatorio.ID_VELATORIO AS idVelatorio",
-                        "velatorio.NOM_VELATORIO AS nombreVelatorio ")
-                .from("SVC_CAPILLA capilla")
-                .join("SVC_VELATORIO velatorio", "capilla.ID_VELATORIO = velatorio.ID_VELATORIO")
-                .where("ID_CAPILLA = :idCapilla")
-                .setParameter("idCapilla", idCapilla)
-                .orderBy("ID_CAPILLA asc");
+        SelectQueryUtil queryUtil = new SelectQueryUtil();
+        queryUtil.select("ID_VALESALIDA as idValeSalida",
+                        "v.ID_VELATORIO as idVelatorio",
+                        "v.NOM_VELATORIO as nombreVelatorio",
+                        "vs.ID_ORDEN_SERVICIO as idOds",
+                        "ods.CVE_FOLIO as folioOds",
+                        "vs.FEC_SALIDA as fechaSalida",
+                        "vs.FEC_ENTRADA as fechaEntrada",
+                        "vs.NUM_DIA_NOVENARIO as diasNovenario",
+                        "NOM_RESPON_INSTA as nombreResponsableInstalacion",
+                        "CVE_MATRICULA_RESPON as matriculaResponsableInstalacion",
+                        "NOM_RESPEQUIVELACION as nombreResponsableEquipo",
+                        "CVE_MATRICULARESPEQUIVELACION as matriculaResponsableEquipo")
+                .from("SVT_VALE_SALIDA vs")
+                .join("SVC_VELATORIO v", "vs.ID_VELATORIO = v.ID_VELATORIO")
+                .join("SVC_ORDEN_SERVICIO ods", "vs.ID_ORDEN_SERVICIO = ods.ID_ORDEN_SERVICIO");
+
+        queryUtil.where("vs.id_velatorio = :idVelatorio",
+                "ods.cve_folio = :folioOds",
+                "vs.FEC_SALIDA >= :fechaInicial",
+                "vs.FEC_SALIDA <= :fechaFinal")
+                .setParameter("idVelatorio", 1)
+                .setParameter("folioOds", "123123")
+                .setParameter("fechaInicial", "01-01-2023")
+                .setParameter("fechaFinal", "01-06-2023");
 
         Map<String, Object> parametros = new HashMap<>();
-        String query = selectQueryUtil.build();
+        String query = queryUtil.build();
 
         return query;
     }
 
+    public String insertQuery() {
+
+        QueryHelper queryHelper = new QueryHelper("INSERT INTO SVT_VALE_SALIDA");
+        queryHelper.agregarParametroValues("ID_VELATORIO", String.valueOf(1));
+        queryHelper.agregarParametroValues("CVE_FOLIO", String.valueOf(1));
+        queryHelper.agregarParametroValues("ID_ORDEN_SERVICIO", String.valueOf(1));
+        queryHelper.agregarParametroValues("NOM_RESPON_ENTREGA", String.valueOf(1));
+        queryHelper.agregarParametroValues("FEC_SALIDA", String.valueOf(1));
+        queryHelper.agregarParametroValues("NOM_RESPON_INSTA", String.valueOf(1));
+        queryHelper.agregarParametroValues("CVE_MATRICULA_RESPON", String.valueOf(1));
+        queryHelper.agregarParametroValues("NOM_RESPEQUIVELACION", String.valueOf(1));
+        queryHelper.agregarParametroValues("CVE_MATRICULARESPEQUIVELACION", String.valueOf(1));
+        queryHelper.agregarParametroValues("CAN_ARTICULOS", String.valueOf(1));
+
+        queryHelper.agregarParametroValues("ID_USUARIO_ALTA", String.valueOf(1));
+        queryHelper.agregarParametroValues("FEC_ALTA", "CURRENT_TIMESTAMP");
+        return queryHelper.obtenerQueryInsertar();
+    }
+
     /**
      * Ejemplo para ver como se puede usar la funci&oacute;n <b>{@code union(SelectQueryUtil)}</b>
+     *
+     * todo - refactor para que union no reciba
      *
      * @return
      */
@@ -251,6 +284,7 @@ public class QueryExample {
                 .innerJoin("tabla_5", "tabla_4.id = tabla_5.id");
 
         String query = primerQuery.union(segundoQuery);
+
         return query;
     }
 

@@ -1,5 +1,6 @@
 package com.example.selectquerydemo.controller;
 
+import com.example.selectquerydemo.dto.ConsultaGeneralRequest;
 import com.example.selectquerydemo.dto.FiltrosDto;
 import com.example.selectquerydemo.service.QueryService;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,18 @@ public class QueryController {
     @GetMapping("/select-con-union")
     public ResponseEntity<String> selectConUnion() {
         String response = queryService.selectConUnion();
+        return getStringResponseEntity(response);
+    }
+
+    @GetMapping("/insert-query")
+    public ResponseEntity<String> insertExample() {
+        String response = queryService.queryHelperExample();
+        return getStringResponseEntity(response);
+    }
+
+    @PostMapping("/union-all-example")
+    public ResponseEntity<String> unionExample(@RequestBody ConsultaGeneralRequest filtros) {
+        String response = queryService.unionAllExample(filtros);
         return getStringResponseEntity(response);
     }
 

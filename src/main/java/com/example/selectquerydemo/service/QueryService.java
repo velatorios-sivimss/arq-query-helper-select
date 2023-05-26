@@ -1,5 +1,6 @@
 package com.example.selectquerydemo.service;
 
+import com.example.selectquerydemo.dto.ConsultaGeneralRequest;
 import com.example.selectquerydemo.dto.FiltrosDto;
 
 public interface QueryService {
@@ -12,4 +13,8 @@ public interface QueryService {
     String otroSelect(Long id);
 
     String selectConUnion();
+
+    String queryHelperExample();
+
+    String unionAllExample(ConsultaGeneralRequest filtros);
 }
