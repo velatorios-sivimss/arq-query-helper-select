@@ -482,9 +482,12 @@ public class SelectQueryUtil {
     }
 
     /**
-     * todo - implementar
+     * Crea la sentencia <b>{@code EXCEPT}</b> o <b>{@code EXCEPT ALL}</b>
      *
-     * @return
+     * @param build es la consulta que se va a agregar a la consulta actual
+     * @param isAll es una bandera que verifica si se agrega o no la palaba <b>{@code ALL}</b>
+     * @return Las sentencias con la instrucci&oacute;n <b>{@code EXCEPT}</b> o <b>{@code EXCEPT ALL}</b>
+     * @since 1.0.2
      */
     private String except(String build, boolean isAll) {
         final String queryUnion = this.build();
@@ -495,10 +498,11 @@ public class SelectQueryUtil {
     }
 
     /**
-     * todo - implementar
+     * Crea la sentencia <b>{@code INTERSECT}</b> o <b>{@code INTERSECT ALL}</b>
      *
-     * @param build
-     * @return
+     * @param build es la consulta que se va a agregar a la consulta actual
+     * @param isAll es una bandera que verifica si se agrega o no la palaba <b>{@code ALL}</b>
+     * @return Las sentencias con la instrucci&oacute;n <b>{@code INTERSECT}</b> o <b>{@code EXCEPT ALL}</b>
      * @since 1.0.2
      */
     private String intersect(String build, boolean isAll) {
@@ -713,7 +717,7 @@ public class SelectQueryUtil {
     }
 
     /**
-     * Valida si el m&eacute;todo <b>{@code select()}</b> ya se ha invocado.
+     * Valida si la funci&oacute;n <b>{@code select()}</b> ya se ha invocado.
      *
      * @see SelectQueryUtil#select(String...)
      * @since 1.0.2
