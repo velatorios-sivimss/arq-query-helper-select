@@ -10,7 +10,7 @@ import java.util.*;
  * Utiler&iacute;a para crear consultas select.
  *
  * @author esa
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class SelectQueryUtil {
     // constantes
@@ -19,6 +19,7 @@ public class SelectQueryUtil {
     private static final String FROM = "FROM";
     private static final String WHERE = "WHERE";
     private static final String LEFT_JOIN = "LEFT JOIN";
+    private static final String RIGHT_JOIN = "RIGHT JOIN";
     private static final String INNER_JOIN = "INNER JOIN";
     private static final String JOIN = "JOIN";
     private static final String ON = "ON";
@@ -261,6 +262,22 @@ public class SelectQueryUtil {
      */
     public SelectQueryUtil leftJoin(String tabla, String... on) {
         helperJoin = new Join(LEFT_JOIN, tabla, on);
+        joins.add(helperJoin);
+        isJoinCalled = true;
+        lastMethodCalled = JOIN;
+        return this;
+    }
+
+    /**
+     * Agrega la sentencia de <b>{@code RIGHT JOIN}</b> para hacer consultas con otras tablas.
+     *
+     * @param tabla nombre de la tabla a la que se le va a hacer el join
+     * @param on    lista de condiciones separadas por <b>{@code ,}</b>
+     * @return
+     * @since 1.0.3
+     */
+    public SelectQueryUtil rightJoin(String tabla, String... on) {
+        helperJoin = new Join(RIGHT_JOIN, tabla, on);
         joins.add(helperJoin);
         isJoinCalled = true;
         lastMethodCalled = JOIN;
